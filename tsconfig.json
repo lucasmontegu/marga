@@ -35,7 +35,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "app/layoutold____tsx", "app/page.ldldlldldtsx"  ],
+, "app/layoutold____tsx", "app/page.ldldlldldtsx", "app/(dashboard)/dashboard/settings/page", "app/(marketing)/[...slug]/page", "app/(dashboard)/dashboard/page", "app/(dashboard)/dashboard/billing/page"  ],
   "exclude": [
     "node_modules"
   ]
