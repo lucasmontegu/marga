@@ -25,6 +25,7 @@ export const env = createEnv({
 
     // Resend Email services
     RESEND_KEY: z.string().min(1),
+    STRIPE_PRO_MONTHLY_PLAN_ID: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_SITE_URL: z.string().min(1),
@@ -42,5 +43,6 @@ export const env = createEnv({
     DATABASE_URL: process.env.DATABASE_URL,
     DIRECT_URL: process.env.DIRECT_URL,
     RESEND_KEY: process.env.RESEND_KEY,
+    STRIPE_PRO_MONTHLY_PLAN_ID: process.env.STRIPE_PRO_MONTHLY_PLAN_ID,
   },
 })
