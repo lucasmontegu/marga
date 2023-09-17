@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model jobs {
+  id               String     @id @default(dbgenerated("gen_random_uuid()"))
+  title            String
+  description      String
+  location         String?
+  salary           String?
+  type             JobType?   @default(REMOTE)
+  status           JobStatus? @default(OPEN)
+  seniority        Seniority?
+  responsibilities String?
+  isActive         Boolean    @default(true)
+  createdAt        DateTime   @default(now()) @db.Timestamptz(6)
+  updatedAt        DateTime   @db.Timestamptz(6)
+  createdById      String     @unique @db.Uuid
+  users            users      @relation(fields: [createdById], references: [user_id], onDelete: Cascade)
+  links            links?
+
+  @@index([createdById])
+}
+
+model links {
+  id               String   @id @default(dbgenerated("gen_random_uuid()"))
+  title            String
+  shortDescription String?
+  jobId            String?  @unique
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt        DateTime @db.Timestamptz(6)
+  profileId        String   @unique
+  createdById      String   @unique @db.Uuid
+  users            users    @relation(fields: [createdById], references: [user_id], onDelete: Cascade)
+  jobs             jobs?    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  profiles         profiles @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([createdById])
+  @@index([jobId])
+  @@index([profileId])
+}
+
+model profiles {
+  id         String   @id @default(dbgenerated("gen_random_uuid()"))
+  bio        String?
+  slug       String   @unique
+  customLink String?
+  createdAt  DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt  DateTime @db.Timestamptz(6)
+  ownerId    String   @unique @db.Uuid
+  links      links?
+  users      users    @relation(fields: [ownerId], references: [user_id], onDelete: Cascade)
+
+  @@index([ownerId])
+}
+
+model team_memberships {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  role      Role     @default(MEMBER)
+  teamId    String   @unique
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @db.Timestamptz(6)
+  memberId  String   @unique @db.Uuid
+  users     users    @relation(fields: [memberId], references: [user_id], onDelete: Cascade)
+  teams     teams    @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@index([memberId])
+  @@index([teamId])
+}
+
+model teams {
+  id               String            @id @default(dbgenerated("gen_random_uuid()"))
+  name             String
+  createdAt        DateTime          @default(now()) @db.Timestamptz(6)
+  updatedAt        DateTime          @db.Timestamptz(6)
+  adminId          String            @unique @db.Uuid
+  team_memberships team_memberships?
+  users            users             @relation(fields: [adminId], references: [user_id], onDelete: Cascade)
+
+  @@index([adminId])
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model users {
+  user_id          String            @id @db.Uuid
+  updated_at       DateTime?         @db.Timestamptz(6)
+  avatar_url       String?
+  createdAt        DateTime          @default(now()) @db.Timestamptz(6)
+  name             String?
+  role             Role              @default(ADMIN)
+  jobs             jobs?
+  links            links?
+  profiles         profiles?
+  team_memberships team_memberships?
+  teams            teams?
+}
+
+enum JobStatus {
+  OPEN
+  CLOSED
+  DRAFT
+}
+
+enum JobType {
+  REMOTE
+  HYBRID
+  ONSITE
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+enum Seniority {
+  JUNIOR
+  MID_LEVEL
+  SENIOR
+}
