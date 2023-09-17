@@ -44,6 +44,7 @@ export default async function Account() {
     const { error } = await supabase
       .from('users')
       .update({ full_name: newName })
+      // @ts-ignore
       .eq('id', user?.id);
     if (error) {
       console.log(error);
@@ -100,7 +101,6 @@ export default async function Account() {
             <div className="flex flex-col items-start justify-between sm:flex-row sm:items-center">
               <p className="pb-4 sm:pb-0">64 characters maximum</p>
               <Button
-                variant="slim"
                 type="submit"
                 form="nameForm"
                 disabled={true}

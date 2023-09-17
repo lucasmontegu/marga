@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation"
 
 import { dashboardConfig } from "@/config/dashboard"
-import { getCurrentUser } from "@/lib/session"
 import { MainNav } from "@/components/main-nav"
 import { DashboardNav } from "@/components/nav"
 import { SiteFooter } from "@/components/site-footer"
@@ -14,7 +13,12 @@ interface DashboardLayoutProps {
 export default async function DashboardLayout({
   children,
 }: DashboardLayoutProps) {
-  const user = await getCurrentUser()
+  const user = {
+    name: "John Doe",
+    image: "https://i.pravatar.cc/150?img=3",
+    email: "",
+    
+  }
 
   if (!user) {
     return notFound()
