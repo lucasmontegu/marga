@@ -1,12 +1,12 @@
 import { redirect } from "next/navigation"
 
-import { authOptions } from "@/lib/auth"
-import { db } from "@/lib/db"
-import { getCurrentUser } from "@/lib/session"
+/* import { authOptions } from "@/lib/auth" */
+import { db } from "@/lib/db"/* 
+import { getCurrentUser } from "@/lib/session" */
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
-import { DashboardHeader } from "@/components/header"
+import { DashboardHeader } from "@/components/header"/* 
 import { PostCreateButton } from "@/components/post-create-button"
-import { PostItem } from "@/components/post-item"
+import { PostItem } from "@/components/post-item" */
 import { DashboardShell } from "@/components/shell"
 
 export const metadata = {
@@ -21,7 +21,7 @@ interface Post {
 }
 
 export default async function DashboardPage() {
-  const user = await getCurrentUser()
+  /* const user = await getCurrentUser()
 
   if (!user) {
     redirect(authOptions?.pages?.signIn || "/login")
@@ -40,15 +40,15 @@ export default async function DashboardPage() {
     orderBy: {
       updatedAt: "desc",
     },
-  })
+  }) */
 
   return (
     <DashboardShell>
       <DashboardHeader heading="Posts" text="Create and manage posts.">
-        <PostCreateButton />
+       {/*  <PostCreateButton /> */}
       </DashboardHeader>
       <div>
-        {posts?.length ? (
+        {/* {posts?.length ? (
           <div className="divide-y divide-border rounded-md border">
             {posts.map((post: Pick<Post, "title" | "id" | "published" | "createdAt">) => (
               <PostItem key={post.id} post={post} />
@@ -63,7 +63,7 @@ export default async function DashboardPage() {
             </EmptyPlaceholder.Description>
             <PostCreateButton variant="outline" />
           </EmptyPlaceholder>
-        )}
+        )} */}
       </div>
     </DashboardShell>
   )
